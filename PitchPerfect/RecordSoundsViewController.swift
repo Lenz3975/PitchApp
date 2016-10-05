@@ -16,17 +16,6 @@ class RecordSoundsViewController: UIViewController , AVAudioRecorderDelegate {
     @IBOutlet weak var stopRecordingButton: UIButton!
   
     var audioRecorder:AVAudioRecorder!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
 
     @IBAction func recordAudio(_ sender: AnyObject) {
         print("Record button pressed")
@@ -34,7 +23,6 @@ class RecordSoundsViewController: UIViewController , AVAudioRecorderDelegate {
         stopRecordingButton.isEnabled = true
         recordButton.isEnabled = false
         
-       
         let dirPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,.userDomainMask, true)[0] as String
         let recordingName = "recordedVoice.wav"
         let pathArray = [dirPath, recordingName]
@@ -49,10 +37,8 @@ class RecordSoundsViewController: UIViewController , AVAudioRecorderDelegate {
         audioRecorder.isMeteringEnabled = true
         audioRecorder.prepareToRecord()
         audioRecorder.record()
-        
-        
-        
     }
+    
     @IBAction func stopRecording(_ sender: AnyObject) {
         print("stop recording button pressed")
         recordingLabel.text = "Tab to Record"
@@ -61,19 +47,18 @@ class RecordSoundsViewController: UIViewController , AVAudioRecorderDelegate {
         audioRecorder.stop()
         let session = AVAudioSession.sharedInstance()
         try! session.setActive(false)
-      
-        
-        
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         stopRecordingButton.isEnabled = false
     }
     
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
         print("Finisch")
         if (flag) {
-            self.performSegue(withIdentifier: "stopRecording", sender: audioRecorder.url)
+            performSegue(withIdentifier: "stopRecording", sender: audioRecorder.url)
         } else {
             print("Saving of recording failed")
         }
